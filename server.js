@@ -1,5 +1,7 @@
 const http = require('http')
 var agent = new http.Agent({});
+var Buffer = require('buffer').Buffer
+
 const PORT = process.env.PORT || 3000
 const options = {
   host: 'google.com',
@@ -19,7 +21,9 @@ const req = http.request(options, (res) => {
 });
 
 function respondHello (req, res) {
-  res.end(JSON.stringify({ msg: 'hello' }))
+  var bufferedValue = Buffer.from('hello').toString('base64');
+  var stringValue = Buffer.from(bufferedValue, 'base64').toString('ascii');
+  res.end(JSON.stringify({ msg: stringValue }))
 }
 
 server.listen(PORT)
